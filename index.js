@@ -2,7 +2,15 @@ import express, { request, response } from 'express';
 import dotenv from 'dotenv';
 import { MongoClient } from 'mongodb';
 import cors from 'cors';
-import { getRooms, getRoom, bookRoom, createNewRoom, userBookingInfo } from './helper.js';
+import {
+	getRooms,
+	getRoom,
+	getCustomer,
+	getCustomerBooking,
+	bookRoom,
+	createNewRoom,
+	userBookingInfo,
+} from './helper.js';
 
 dotenv.config();
 const app = express();
@@ -46,6 +54,21 @@ app.get('/book-room/:id', async (request, response) => {
 	const result = await getRoom(id);
 
 	response.send(result[0]);
+});
+
+// To get user info
+app.get('/get-user', async (request, response) => {
+	const result = await getCustomer();
+	response.send(result);
+});
+
+// To get user info
+app.get('/get-user-booking/:id', async (request, response) => {
+	const { id } = request.params;
+
+	const result = await getCustomerBooking(id);
+
+	response.send(result);
 });
 
 // To book room for user

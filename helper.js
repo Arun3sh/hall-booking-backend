@@ -20,6 +20,22 @@ async function getRoom(id) {
 		.toArray();
 }
 
+async function getCustomer() {
+	return await client
+		.db('hall-booking')
+		.collection('user')
+		.find({}, { projection: { booking_details: 0 } })
+		.toArray();
+}
+
+async function getCustomerBooking(id) {
+	return await client
+		.db('hall-booking')
+		.collection('user')
+		.find({ _id: ObjectId(id) })
+		.toArray();
+}
+
 async function bookRoom(id, booking_details) {
 	return await client
 		.db('hall-booking')
@@ -48,4 +64,12 @@ async function userBookingInfo(name, user_booking) {
 		.updateOne({ name: name }, { $push: { booking_details: user_booking } }, { upsert: true });
 }
 
-export { getRooms, getRoom, bookRoom, createNewRoom, userBookingInfo };
+export {
+	getRooms,
+	getRoom,
+	getCustomer,
+	getCustomerBooking,
+	bookRoom,
+	createNewRoom,
+	userBookingInfo,
+};
